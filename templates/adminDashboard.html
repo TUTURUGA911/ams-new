@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #343a40;
+            padding: 20px;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition: transform 0.3s;
+            z-index: 100;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .sidebar a {
+            color: white;
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #6f42c1;
+            transform: translateX(10px);
+        }
+
+        .sidebar .active {
+            background: #6f42c1;
+            border-radius: 8px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            flex: 1;
+            background: #ffffff;
+            transition: margin-left 0.3s;
+        }
+
+        .hero {
+            margin-top: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .card .card-body {
+            padding: 20px;
+        }
+
+        .card-red {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .card-yellow {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .card-green {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .card-purple {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .export-btn {
+            background: #6f42c1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .export-btn:hover {
+            background: #563d7c;
+            transform: scale(1.05);
+        }
+
+        .shop-now {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #6f42c1;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .shop-now:hover {
+            background-color: #57398e;
+            transform: scale(1.05);
+        }
+
+        .shop-now-back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #474747;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .shop-now-back:hover {
+            background-color: #5c5b5b;
+            transform: scale(1.05);
+        }
+
+        .search input {
+            border-radius: 20px 0 0 20px;
+        }
+
+        .search button {
+            border-radius: 0 20px 20px 0;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            box-shadow: none;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 0.2rem rgba(110, 99, 211, 0.25);
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+                position: fixed;
+                height: 100vh;
+                z-index: 100;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .content {
+                margin-left: 50px;
+                padding: 10px;
+                padding-bottom: 80px;
+            }
+
+            .navbar-toggler {
+                display: block;
+                z-index: 200;
+                position: fixed;
+                bottom: 10px;
+                left: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .sidebar h2 {
+                font-size: 1.2rem;
+            }
+
+            .sidebar a {
+                padding: 5px;
+                font-size: 0.8rem;
+            }
+
+            .content {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light">
+        <button class="navbar-toggler" type="button" id="sidebarToggle" aria-controls="sidebar" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+
+    <div class="sidebar" id="sidebar">
+        <h2>Admin AMS</h2>
+        <a href="/dashboard" class="active"><i class="fas fa-chart-pie"></i> Dashboard</a>
+        <a href="/manageuser"><i class="fas fa-user-shield"></i> User</a>
+        <a href="#"><i class="fas fa-blog"></i> Blog</a>
+        <a href="/manageorder"><i class="fas fa-shopping-cart"></i> Order</a>
+        <a href="/addproduct"><i class="fas fa-plus-circle"></i> Tambah Produk</a>
+        <a href="/manageproduct"><i class="fas fa-cog"></i> Manage Produk</a>
+
+        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="content">
+        <h2>Today's Sales</h2>
+        <p>Sales Summary</p>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="card card-red">
+                    <div class="card-body">
+                        <div>
+                            <h5>$1k</h5>
+                            <p>Total Sales</p>
+                            <small>Last day +8%</small>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card card-yellow">
+                    <div class="card-body">
+                        <div>
+                            <h5>300</h5>
+                            <p>Total Order</p>
+                            <small>Last day +5%</small>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card card-green">
+                    <div class="card-body">
+                        <div>
+                            <h5>5</h5>
+                            <p>Sold</p>
+                            <small>Last day +1.2%</small>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card card-purple">
+                    <div class="card-body">
+                        <div>
+                            <h5>8</h5>
+                            <p>Customers</p>
+                            <small>Last day +0.5%</small>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!-- Custom JS for sidebar toggle -->
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            var sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        });
+
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('You have been logged out!')
+            window.location.href = '/'
+        }
+    </script>
+</body>
+
+</html>

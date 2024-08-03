@@ -1,0 +1,72 @@
+.konten-senjata {
+    width: 100%;
+    height: auto;
+    margin: auto auto auto auto;
+    padding: 10px;
+    background-size: cover;
+    min-height: 10vh;
+
+    /* background-color: white; */
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.unsplash.com/photo-1539164986234-d51d1fe3a629?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+}
+
+.row {
+    max-width: 1500px;
+    margin: 0 auto;
+    display: flex;
+}
+
+#admin {
+    margin-right: 25px;
+}
+  
+#armory-summary {
+    text-align: center;
+    margin-top: 10px;
+}
+  
+col {
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+}
+  
+#navbar h2 {
+    margin-left: 25px;
+}
+  
+ul > li {
+    margin-bottom: 10px;
+}
+  
+#current-time {
+    margin-right: 20px;
+}
+
+.form-input {
+    width: 90%;
+    margin: 50px auto;
+    /* Center horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Set height to 100% of the viewport height for vertical centering */
+}
+
+.card {
+    padding: 20px;
+}
+
+input {
+    width: 100%;
+    height: 38px;
+}
+
+.login-banner {
+    background-image: url('../static/images/post-1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}

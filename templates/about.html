@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMS</title>
+    <!-- Customized Bootstrap Stylesheet -->
+
+    <link href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Template Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-slider.css') }}" />
+    <style>
+        .search input {
+            width: 80%;
+            border-radius: 20px 0 0 20px;
+        }
+
+        .search button {
+            border-radius: 0 20px 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Start Header/Navigation -->
+    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark fixed-top" aria-label="Furni navigation bar">
+        <div class="container">
+            <a class="navbar-brand" href="/">AMS About<span>.</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarsFurni">
+                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li><a class="nav-link" href="/shop">Shop</a></li>
+                    <li class="active"><a class="nav-link" href="/about">About us</a></li>
+                    <li><a class="nav-link" href="/contact">Contact us</a></li>
+                    {% if logged_in %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart">
+                            <i class="bi bi-cart-fill" style="font-size: 1.2rem;"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orders">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" onclick="logout()">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <!-- End Header/Navigation -->
+
+    <!-- Start Hero Section -->
+    <div class="hero">
+        <div class="container pt-5">
+            <div class="row justify-content-between mb-5">
+                <div class="col-lg-5">
+                    <div class="intro-excerpt">
+                        <h1> Moto AMS </span></h1>
+                        <p class="mb-4">
+                            Moto kami MELEBIHI HARAPAN konsumen, kami menjamin kualitas sesuai standar yang diharapkan,
+                            sehingga klien kami mendapat pelayanan dan jaminan kualitas, kepercayaan ini menjadi bagian
+                            dari semangat kami untuk terus melayani, dengan pelayanan paska project yang menjadikan kami
+                            terus eksis dan terus berinovasi.
+                        </p>
+                        <p><a href="/shop" class="btn btn-light me-2">Belanja Sekarang</a></p>
+                    </div>
+                </div>
+                <div class="col-lg-7 mt-5">
+                    <div class="hero-img-wrap">
+                    </div>
+                </div>
+            </div>
+            <div class="search d-flex align-items-center flex-grow-1 mb-3 pb-3">
+                <form class="d-flex justify-content-center flex-grow-1" action="/search" method="GET">
+                    <input class="form-control me-2" type="search" placeholder="Cari Sepatu Kamu Hoopers..."
+                        aria-label="Search" name="q">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End Hero Section -->
+    <!-- Start Why Choose Us Section -->
+    <div class="why-choose-section">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="section-title">Why Choose Us</h2>
+                    <p>
+                        AMS adalah sebuah perusahaan yang bergerak dalam pelayanan jasa konsultan, pengadaan dan
+                        pemasangan : Instalasi Nurse Call, Instalasi Gas Medis, Sistem Manajemen Rumah Sakit. Kami juga
+                        siap membantu Anda dalam merancang dan membangun sistem yang sesuai dengan kebutuhan dan
+                        anggaran Anda.
+                    </p>
+
+                    <div class="row my-5">
+                        <div class="col-6 col-md-6">
+                            <div class="feature">
+                                <div class="icon">
+                                    <img src="{{url_for('static', filename = 'images/truck.svg')}}" alt="Image"
+                                        class="imf-fluid">
+                                </div>
+                                <h3>Fast &amp; Free Shipping</h3>
+                                <p>
+                                    Cepat dan gratis pengiriman ke daerah Bogor dan sekitarnya. Kami juga menerima
+                                    pesanan dari luar kota dengan biaya pengiriman yang terjangkau.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-6">
+                            <div class="feature">
+                                <div class="icon">
+                                    <img src="{{url_for('static', filename = 'images/bag.svg')}}" alt="Image"
+                                        class="imf-fluid">
+                                </div>
+                                <h3>Easy to Shop</h3>
+                                <p>
+                                    Kami menyediakan berbagai macam produk nurse call dan gas medis yang dapat Anda
+                                    pilih.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-6">
+                            <div class="feature">
+                                <div class="icon">
+                                    <img src="{{url_for('static', filename = 'images/support.svg')}}" alt="Image"
+                                        class="imf-fluid">
+                                </div>
+                                <h3>24/7 Support</h3>
+                                <p>
+                                    Tim customer service kami siap membantu Anda 24 jam sehari, 7 hari seminggu. Jika
+                                    Anda memiliki pertanyaan atau masalah, jangan ragu untuk menghubungi kami.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-6">
+                            <div class="feature">
+                                <div class="icon">
+                                    <img src="{{url_for('static', filename = 'images/return.svg')}}" alt="Image"
+                                        class="imf-fluid">
+                                </div>
+                                <h3>Hassle Free Returns</h3>
+                                <p>
+                                    Kami menawarkan kebijakan pengembalian yang mudah dan tanpa ribet. Jika Anda tidak
+                                    puas dengan pembelian Anda, Anda dapat mengembalikan barang tersebut dan mendapatkan
+                                    pengembalian dana penuh.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div>
+                        <img src="{{url_for('static', filename = 'images/logo.png')}}" alt="Image" class="img-fluid">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End Why Choose Us Section -->
+
+    <!-- Start Footer Section -->
+    <footer class="footer-section">
+        <div class="container relative">
+            <div class="row g-5 mb-5">
+                <div class="col-lg-4">
+                    <div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">AMS<span>.</span></a></div>
+                    <p class="mb-4">
+                        Moto kami MELEBIHI HARAPAN konsumen, kami menjamin kualitas sesuai standar yang diharapkan,
+                        sehingga klien kami mendapat pelayanan dan jaminan kualitas, kepercayaan ini menjadi bagian dari
+                        semangat kami untuk terus melayani, dengan pelayanan paska project yang menjadikan kami terus
+                        eksis dan terus berinovasi.
+                    </p>
+                    <ul class="list-unstyled custom-social">
+                        <li><a href="#"><span class="bi bi-facebook"></span></a></li>
+                        <li><a href="#"><span class="bi bi-twitter"></span></a></li>
+                        <li><a href="#"><span class="bi bi-instagram"></span></a></li>
+                        <li><a href="#"><span class="bi bi-linkedin"></span></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="map_container">
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3964.1684135378687!2d106.8019525!3d-6.5003525!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c30b547f0a33%3A0xc21e8e25e072d5f3!2sPT.Anugerah%20Mitrautama%20Sejahtera!5e0!3m2!1sid!2sid!4v1722352155896!5m2!1sid!2sid"
+                                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-top copyright">
+                <div class="row pt-4">
+                    <div class="col-lg-6">
+                        <p class="mb-2 text-center text-lg-start">Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash;
+                        <p>AMS</p>
+                        </p>
+                    </div>
+
+                    <div class="col-lg-6 text-center text-lg-end">
+                        <ul class="list-unstyled d-inline-flex ms-auto">
+                            <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- End Footer Section -->
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tiny-slider.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
+
+</body>
+
+</html>

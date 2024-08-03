@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMS</title>
+    <!-- Customized Bootstrap Stylesheet -->
+
+    <link href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Template Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-slider.css') }}" />
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 80px;
+            /* Adjusted for navbar height */
+        }
+
+        .form-section {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-section .form {
+            width: 48%;
+        }
+
+        .form-section .summary {
+            width: 48%;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .form-section .summary img {
+            width: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .shipping-method {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        .button {
+            background-color: #333;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        .order-item p {
+            margin: 2px 0;
+        }
+        .shop-now {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #9f9f9f;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .shop-now:hover {
+            background-color: #f9bf29;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Start Header/Navigation -->
+    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark fixed-top" aria-label="Furni navigation bar">
+        <div class="container">
+            <a class="navbar-brand" href="/">DKW Cart<span>.</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
+                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarsFurni">
+                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav item "><a class="nav-link" href="/shop">Shop</a></li>
+                    <li><a class="nav-link" href="/about">About us</a></li>
+                    <li><a class="nav-link" href="/contact">Contact us</a></li>
+                    {% if is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageproduct">Kelola Produk</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manageorder">Kelola Orders</a>
+                    </li>
+                    {% endif %}
+                    {% if logged_in %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/cart">
+                            <i class="bi bi-cart-fill" style="font-size: 1.2rem;"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orders">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" onclick="logout()">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <!-- End Header/Navigation -->
+    <!-- Main Content -->
+    <div class="container mt-5 mb-5">
+        <form id="orderForm" action="/place_order" method="POST">
+            <div class="form-section">
+                <div class="form">
+                    <h4><b>Billing Address</b></h4>
+                    <div class="form-group">
+                        <label for="full-name">Nama Lengkap</label>
+                        <input type="text" id="full-name" name="full-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone">Nomer Telepon</label>
+                        <input type="tel" id="telephone" name="telephone">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Alamat</label>
+                        <input type="text" id="address" name="address">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">Kota</label>
+                        <input type="text" id="city" name="city">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Negara</label>
+                        <select id="country" name="country">
+                            <option value="indonesia">Indonesia</option>
+                            <!-- Add more country options here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="postcode">Kode Pos</label>
+                        <input type="text" id="postcode" name="postcode" value="{{ user_info.postcode }}">
+                    </div>
+                    <div class="form-group shipping-method">
+                        <label for="shipping-options">Metode Pengiriman</label>
+                        <select id="shipping-options" class="form-control" name="shipping-method" onchange="updateTotal()">
+                            <option value="Regular" data-price="50000">Regular Shipping (Rp50000)</option>
+                            <option value="Express" data-price="100000">Express Shipping (Rp100000)</option>
+                        </select>
+                    </div>
+                    <br>
+                </div>
+                <div class="summary">
+                    <h3>Your Order</h3>
+                    {% for item in cart_items %}
+                    <div class="order-item">
+                        <img src="/static/product_pics/{{ item.product_image }}" alt="{{ item.product_name }}">
+                        <b>{{ item.product_name }}</b>
+                        <p>{{ item.quantity }} x Rp{{ item.product_price | format_price }}</p>
+                        <p>Total Harga: Rp{{ item.product_price | format_price * item.quantity }}</p>
+                    </div>
+                    <hr>
+                    {% endfor %}
+                    <h5>Total Harga: Rp{{ total_checkout |format_price }}</h5>
+                    <h5>Biaya Pengiriman: <span id="shipping-cost">Rp0</span></h5>
+                    <br>
+                    <h5>Total Pembayaran: <span id="total-shopping">Rp{{ total_checkout }}</span></h5>
+                </div>
+            </div>
+            <button type="submit" class="shop-now" id="button">Place Order</button>
+            <a href="/cart" class="shop-now" id="button">Back</a>
+        </form>
+    </div>
+    <!-- End Main Content -->
+
+    <script>
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('You have been logged out!')
+            window.location.href = '/'
+        }
+
+        function updateTotal() {
+            const shippingSelect = document.getElementById('shipping-options');
+            const selectedOption = shippingSelect.options[shippingSelect.selectedIndex];
+            const shippingPrice = parseInt(selectedOption.getAttribute('data-price'));
+            const totalCheckout = {{ total_checkout }};
+            const totalShoppingElement = document.getElementById('total-shopping');
+            const shippingCostElement = document.getElementById('shipping-cost');
+
+            const totalShopping = totalCheckout + shippingPrice;
+            shippingCostElement.textContent = `Rp${shippingPrice.toLocaleString()}`;
+            totalShoppingElement.textContent = `Rp${totalShopping.toLocaleString()}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            updateTotal(); // Initial calculation
+        });
+        
+    </script>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tiny-slider.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
+
+</body>
+
+</html>

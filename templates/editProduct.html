@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Addproduct</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #343a40;
+            padding: 20px;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition: transform 0.3s;
+            z-index: 100;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .sidebar a {
+            color: white;
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #6f42c1;
+            transform: translateX(10px);
+        }
+
+        .sidebar .active {
+            background: #6f42c1;
+            border-radius: 8px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            flex: 1;
+            background: #ffffff;
+            transition: margin-left 0.3s;
+        }
+
+        .hero {
+            margin-top: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .card .card-body {
+            padding: 20px;
+        }
+
+        .card-red {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .card-yellow {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .card-green {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .card-purple {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .export-btn {
+            background: #6f42c1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .export-btn:hover {
+            background: #563d7c;
+            transform: scale(1.05);
+        }
+
+        .shop-now {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #6f42c1;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .shop-now:hover {
+            background-color: #57398e;
+            transform: scale(1.05);
+        }
+
+        .shop-now-back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #474747;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .shop-now-back:hover {
+            background-color: #5c5b5b;
+            transform: scale(1.05);
+        }
+
+        .search input {
+            border-radius: 20px 0 0 20px;
+        }
+
+        .search button {
+            border-radius: 0 20px 20px 0;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            box-shadow: none;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 0.2rem rgba(110, 99, 211, 0.25);
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+                position: fixed;
+                height: 100vh;
+                z-index: 100;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .content {
+                margin-left: 50px;
+                padding: 10px;
+                padding-bottom: 80px;
+            }
+
+            .navbar-toggler {
+                display: block;
+                z-index: 200;
+                position: fixed;
+                bottom: 10px;
+                left: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .sidebar h2 {
+                font-size: 1.2rem;
+            }
+
+            .sidebar a {
+                padding: 5px;
+                font-size: 0.8rem;
+            }
+
+            .content {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light">
+        <button class="navbar-toggler" type="button" id="sidebarToggle" aria-controls="sidebar" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+
+    <div class="sidebar" id="sidebar">
+        <h2>Admin AMS</h2>
+        <a href="/dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
+        <a href="#"><i class="fas fa-user-shield"></i> User</a>
+        <a href="#"><i class="fas fa-blog"></i> Blog</a>
+        <a href="/manageorder"><i class="fas fa-shopping-cart"></i> Order</a>
+        <a href="/addproduct" class="active"><i class="fas fa-plus-circle"></i> Tambah Produk</a>
+        <a href="/manageproduct"><i class="fas fa-cog"></i> Manage Produk</a>
+        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="content">
+        <!-- Start Hero Section -->
+        <div class="hero">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-10">
+                        <div class="card p-4">
+                            <div class="text-center mb-4">
+                                <h3 class="text-uppercase">Edit Produk</h3>
+                            </div>
+                            <hr>
+                            <form>
+                                <div class="mb-4">
+                                    <label for="product-name" class="form-label">Nama Produk</label>
+                                    <input type="text" class="form-control" id="product-name" placeholder="Product Name"
+                                        value="{{info_product.product_name}}">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="product-price" class="form-label">Harga Produk</label>
+                                    <input type="number" class="form-control" id="product-price"
+                                        placeholder="Example: 10000000" value="{{info_product.product_price}}">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="product-stock" class="form-label">Stock Produk</label>
+                                    <input type="number" class="form-control" id="product-stock"
+                                        placeholder="Example: 10" value="{{info_product.product_stock}}">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="image" class="form-label">Gambar Utama</label>
+                                    <div class="mb-2">
+                                        <img class="img-fluid" src="/static/product_pics/{{info_product.image}}"
+                                            alt="Product Image" style="width: 100%; max-width: 500px;">
+                                    </div>
+                                    <p>Note: Upload gambar untuk update gambar</p>
+                                    <input class="form-control" id="image" type="file">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="image2" class="form-label">Gambar Kedua</label>
+                                    <div class="mb-2">
+                                        <img class="img-fluid" src="/static/product_pics/{{info_product.image2}}"
+                                            alt="Product Image 2" style="width: 100%; max-width: 500px;">
+                                    </div>
+                                    <p>Note: Upload gambar untuk update gambar</p>
+                                    <input class="form-control" id="image2" type="file">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="deskripsi" class="form-label">Deskripsi</label>
+                                    <textarea class="form-control" id="deskripsi" rows="5"
+                                        placeholder="Description">{{info_product.description}}</textarea>
+                                </div>
+                                <div class="d-grid me-2 gap-2 d-md-flex justify-content-md-end">
+                                    <button onclick="update('{{info_product._id}}')" class="btn btn-primary"
+                                        type="button">Edit</button>
+                                    <button onclick="window.location.href='/manageproduct'" class="btn btn-secondary"
+                                        type="button">Back</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Hero Section -->
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!-- Custom JS for sidebar toggle -->
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            var sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        });
+
+        function update(id_product) {
+            let product_name = $('#product-name').val();
+            let product_price = $('#product-price').val();
+            let product_stock = $('#product-stock').val();
+            let deskripsi = $('#deskripsi').val();
+            let gambar = $("#image").prop("files")[0];
+            let gambar2 = $("#image2").prop("files")[0];
+
+            if (product_name && product_price && product_stock && deskripsi) {
+                let form_data = new FormData();
+
+                form_data.append("name_give", product_name);
+                form_data.append("price_give", product_price);
+                form_data.append("stock_give", product_stock);
+                form_data.append("deskripsi_give", deskripsi);
+
+                // Check if a new file is selected
+                if (gambar) {
+                    form_data.append("file_give", gambar);
+                }
+
+                if (gambar2) {
+                    form_data.append("file_give2", gambar2);
+                }
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/edit_product/" + id_product,
+                    data: form_data,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        if (response['result'] === 'success') {
+                            alert("Success! " + response['msg']);
+                            window.location.href = '/manageproduct';
+                        } else {
+                            alert("Error: " + response['msg']);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.error("AJAX Error: ", textStatus, errorThrown);
+                        alert("An error occurred while updating the product.");
+                    }
+                });
+            } else {
+                alert("Fill in all the data");
+            }
+        }
+
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('You have been logged out!');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+
+</html>
