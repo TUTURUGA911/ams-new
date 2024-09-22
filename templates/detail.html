@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DKW Hoops</title>
+    <title>AMS</title>
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}"
         rel="stylesheet" />
@@ -13,53 +13,13 @@
     <!-- Template Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-slider.css') }}" />
-
+    <!-- Template Main CSS File -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css2/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css2/main.css') }}" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
     <style>
-        /* Global styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            margin: 0;
-            padding: 0;
-        }
-
-        .page-width {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header styles */
-        .header {
-            background-color: #fff;
-            border-bottom: 1px solid #ddd;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header img {
-            height: 50px;
-        }
-
-        .header .nav {
-            display: flex;
-            align-items: center;
-        }
-
-        .header .nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #000;
-            font-weight: bold;
-        }
-
-        .header .contact {
-            color: #f9bf29;
-            font-weight: bold;
-        }
-
         /* Banner styles */
         .banner {
             background-color: #fdfdfd;
@@ -95,12 +55,66 @@
             background-color: #cfa028;
         }
 
-        /* Product details styles */
-        .product-details {
+        /* Product section styles */
+        .product-section {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .product-images {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-product-image {
+            width: 400px;
+            height: 400px;
+            object-fit: contain;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .thumbnail-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .main-product-image:hover {
+            transform: scale(1.2);
+            z-index: 10;
+        }
+
+        .thumbnail-container img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .thumbnail-container img:hover {
+            border-color: #229ed8;
+            transform: scale(1.2);
+            z-index: 10;
+        }
+
+
+        .product-details {
+            flex: 1;
         }
 
         .product-single-name {
@@ -158,201 +172,135 @@
         }
 
         .shop-now-button:hover {
-            background-color: #edb53d;
+            background-color: #229ed8;
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: column;
+            }
+
+            .product-images {
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <!-- Start Header/Navigation -->
-    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark fixed-top" aria-label="Furni navigation bar">
-        <div class="container">
-            <a class="navbar-brand" href="/">DKW Shop<span>.</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarsFurni">
-                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item active"><a class="nav-link" href="/shop">Shop</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about">About us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/service">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact">Contact us</a></li>
-                    {% if is_admin %}
-                    <li class="nav-item"><a class="nav-link" href="/manageproduct">Kelola Produk</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/manageorder">Kelola Orders</a></li>
-                    {% endif %}
-                    {% if logged_in %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cart">
-                            <i class="bi bi-cart-fill" style="font-size: 1.2rem;"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="/orders">Orders</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/" onclick="logout()">Logout</a></li>
-                    {% else %}
-                    <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- End Header/Navigation -->
+    <!-- ======= Header ======= -->
+    <header id="header" class="header d-flex align-items-center">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="icon-AMSID" height="40px" />
+                <h1 style="color: #ffffff">AMS</h1>
+                <span style="color: aliceblue">.</span>
+                <h1 style="color: #ffffff;">Shop</h1>
+            </a>
 
-    <div class="untree_co-section product-section before-footer-section">
-        <div class="container">
-            <div class="row">
-                <!-- Product Details -->
-                <div class="page-width">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <!-- Product Images Carousel -->
-                            <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active position-relative">
-                                        <img src="/static/product_pics/{{info_product.image}}" width="560" height="315"
-                                            style="object-fit: contain;" class="d-block w-100" alt="Slide 1">
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel"
-                                            data-bs-slide="prev">
-                                            <span aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                                    fill="orange" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="m3.86 7.247 5.482-4.796c.646-.566 1.658-.106 1.658.753v9.298a1 1 0 0 1-1.659.753l-5.48-4.796a1 1 0 0 1 0-1.506z" />
-                                                </svg>
-                                            </span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel"
-                                            data-bs-slide="next">
-                                            <span aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                                    fill="orange" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                                </svg>
-                                            </span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div>
-                                    <div class="carousel-item position-relative">
-                                        <img src="/static/product_pics/{{info_product.image2}}" width="560" height="315"
-                                            style="object-fit: contain;" class="d-block w-100" alt="Slide 1">
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel"
-                                            data-bs-slide="prev">
-                                            <span aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                                    fill="orange" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="m3.86 7.247 5.482-4.796c.646-.566 1.658-.106 1.658.753v9.298a1 1 0 0 1-1.659.753l-5.48-4.796a1 1 0 0 1 0-1.506z" />
-                                                </svg>
-                                            </span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel"
-                                            data-bs-slide="next">
-                                            <span aria-hidden="true">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                                    fill="orange" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
-                                                </svg>
-                                            </span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                {% if not is_admin %}
-                                <div class="row justify-content-center mt-5">
-                                    <div class="col-md-6">
-                                        <div class="testimonial-form">
-                                            <h2 class="text-center mb-4">Masukan Review</h2>
-                                            <form action="/add_testimonial" method="POST">
-                                                <!-- Hidden input for product_id -->
-                                                <input type="hidden" name="product_id" value="{{ info_product._id }}">
-                                                <div class="mb-3">
-                                                    <textarea name="testimonial" rows="4"
-                                                        placeholder="Enter your testimonial..." class="form-control"
-                                                        required></textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <input type="submit" value="Submit" class="btn btn-primary">
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endif %}
-                                <!-- Testimonials List -->
-                                <div class="row justify-content-center mt-5">
-                                    <div class="col-md-8">
-                                        <h2 class="text-center mb-4">Review</h2>
-                                        <ul class="list-unstyled">
-                                            {% for testimonial in testimonials %}
-                                            <li class="mb-4">
-                                                <div class="border p-3 rounded">
-                                                    <p class="mb-2">{{ testimonial.testimonial }}</p>
-                                                    <p class="text-muted mb-0">- {{ testimonial.user_id }}</p>
-                                                    <p class="text-muted font-size-sm">{{
-                                                        testimonial.created_at.strftime("%Y-%m-%d") }}</p>
-                                                </div>
-                                            </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- End Testimonials List -->
-                            </div>
-                            <!-- End Product Images Carousel -->
-                        </div>
-                        <div class="col-md-6">
-                            <!-- Product Information -->
-                            <div class="product-details">
-                                <h2 class="product-single-name">{{info_product.product_name}}</h2>
-                                <p class="product-stock">Stock: {{info_product.product_stock}}</p>
-                                <h3 class="product-single-price">Rp{{info_product.product_price | format_price }}</h3>
-                                <form id="productForm" action="/api/cart/mine/items" method="POST">
-                                    <input type="hidden" name="product_id" value="{{info_product._id}}">
-                                    <input type="hidden" name="product_name" value="{{info_product.product_name}}">
-                                    <input type="hidden" name="product_price" value="{{info_product.product_price}}">
-                                    <input type="hidden" name="product_image" value="{{info_product.image}}">
-                                    <div class="add-to-cart">
-                                        <div class="form-field-container">
-                                            <input type="number" name="qty" placeholder="Qty" value="1" min="1">
-                                        </div>
-                                        <button type="submit" class="shop-now-button">Tambahkan Ke Keranjang</button>
-                                    </div>
-                                </form>
-                                <div class="mt-2 md:mt-3">
-                                    <div class="product-description">
-                                        <div class="ck-content">
-                                            <h4><b>Deskripsi Produk</b></h4>
-                                            <div>
-                                                <p>{{info_product.description | replace('\n', '<br>') | safe}}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Product Information -->
-                        </div>
-                    </div>
-                </div>
-                <!-- End Product Details -->
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+            <nav id="navbar" class="navbar"></nav>
+            <!-- .navbar -->
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <div class="hero">
+        <div class="pt-5">
+            <!-- End Carousel -->
+            <div class="search container d-flex align-items-center flex-grow-1 mb-3 mt-5 pb-3">
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <div class="product-section">
+        <div class="container">
+            <div class="product-container">
+                <!-- Product Images Section -->
+                <div class="product-images">
+                    <!-- Main Product Image -->
+                    <img id="mainImage" class="main-product-image" src="/static/product_pics/{{ info_product.image }}"
+                        alt="Main Product Image">
+
+                    <!-- Thumbnails Section -->
+                    <div id="thumbnailContainer" class="thumbnail-container">
+                    </div>
+                </div>
+
+                <!-- Product Information -->
+                <div class="product-details">
+                    <h2 class="product-single-name">{{info_product.product_name}}</h2>
+                    <p class="product-stock">Stock: {{info_product.product_stock}}</p>
+                    <h3 class="product-single-price">Rp{{info_product.product_price | format_price }}</h3>
+                    <form id="productForm" action="/api/cart/mine/items" method="POST">
+                        <input type="hidden" name="product_id" value="{{info_product._id}}">
+                        <input type="hidden" name="product_name" value="{{info_product.product_name}}">
+                        <input type="hidden" name="product_price" value="{{info_product.product_price}}">
+                        <input type="hidden" name="product_image" value="{{info_product.image}}">
+                        <div class="add-to-cart">
+                            <div class="form-field-container">
+                                <input type="number" name="qty" placeholder="Qty" value="1" min="1">
+                            </div>
+                            <button type="submit" class="shop-now-button">Tambahkan Ke Keranjang</button>
+                        </div>
+                    </form>
+                    <div class="mt-2 md:mt-3">
+                        <div class="product-description">
+                            <div class="ck-content">
+                                <h4><b>Deskripsi Produk</b></h4>
+                                <div>
+                                    <p>{{info_product.description | replace('\n', '<br>') | safe}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Product Information -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // List of images
+        var images = [
+            '/static/product_pics/{{ info_product.image }}',
+            '/static/product_pics/{{ info_product.image2 }}',
+            '/static/product_pics/{{ info_product.image3 }}',
+            '/static/product_pics/{{ info_product.image4 }}'
+        ];
+
+        // Container for thumbnails
+        var thumbnailContainer = document.getElementById('thumbnailContainer');
+
+        // Create and append thumbnails
+        images.forEach(function (src, index) {
+            if (src) { // Check if the image source exists
+                var img = document.createElement('img');
+                img.src = src;
+                img.alt = 'Thumbnail ' + (index + 1);
+                img.onclick = function () {
+                    document.getElementById('mainImage').src = src;
+                };
+                thumbnailContainer.appendChild(img);
+            }
+        });
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/tiny-slider.js') }}"></script>
     <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
-
+    <script src="{{ url_for('static', filename='js2/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js2/form-control.js') }}"></script>
+    <script src="{{ url_for('static', filename='js2/navbar-control.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.10.1/sha256.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.10.1/sha256.js"></script>
 </body>
 
 </html>

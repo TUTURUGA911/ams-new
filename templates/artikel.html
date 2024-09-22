@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Manageproduct</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #343a40;
+            padding: 20px;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            transition: transform 0.3s;
+            z-index: 100;
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #6f42c1;
+            transform: translateX(10px);
+        }
+
+        .sidebar .active {
+            background: #6f42c1;
+            border-radius: 8px;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            flex: 1;
+            background: #ffffff;
+            transition: margin-left 0.3s;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ffffff;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-control {
+            border-radius: 10px;
+            box-shadow: none;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 0.2rem rgba(110, 99, 211, 0.25);
+        }
+
+        .btn {
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: #6f42c1;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #563d7c;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .table th {
+            background-color: #6f42c1;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .table tbody tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+
+        .table tbody tr:nth-of-type(even) {
+            background-color: #ffffff;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+                position: fixed;
+                height: 100vh;
+                z-index: 100;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                display: block;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .content {
+                margin-left: 50px;
+                padding: 10px;
+                padding-bottom: 80px;
+            }
+
+            .navbar-toggler {
+                display: block;
+                z-index: 200;
+                position: fixed;
+                bottom: 10px;
+                left: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .sidebar h2 {
+                font-size: 1.2rem;
+            }
+
+            .sidebar a {
+                padding: 5px;
+                font-size: 0.8rem;
+            }
+
+            .content {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light">
+        <button class="navbar-toggler" type="button" id="sidebarToggle" aria-controls="sidebar" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+
+    <div class="sidebar" id="sidebar">
+        <h2>Admin AMS</h2>
+        <a href="/dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
+        <a href="/manageuser"><i class="fas fa-user-shield"></i> User</a>
+        <a href="/artikel" class="active"><i class="fas fa-blog"></i> Blog</a>
+        <a href="/manageorder"><i class="fas fa-shopping-cart"></i> Order</a>
+        <a href="/addproduct"><i class="fas fa-plus-circle"></i> Tambah Produk</a>
+        <a href="/manageproduct"><i class="fas fa-cog"></i> Manage Produk</a>
+        <a href="javascript:void(0);" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-12">
+                    <div class="card w-100">
+                        <div class="text-center mb-3 pb-3 mt-4">
+                            <h2>Data Blog</h2>
+                        </div>
+                        <hr />
+                    </div>
+
+                    <section class="card-body mt-3">
+                        <form method="post" action="{{ url_for('tambah_artikel') }}" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="nama-artikel" class="form-label">Judul Artikel</label>
+                                    <input type="text" class="form-control" id="nama-artikel" name="nama_give"
+                                        placeholder="Input some values" required />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="keterangan-gambar" class="form-label">Keterangan Gambar</label>
+                                    <input type="text" class="form-control" id="keterangan-gambar"
+                                        name="keterangan_gambar" placeholder="Input some values" required />
+                                </div>
+                                <div class="col-12 mb-5">
+                                    <label for="keterangan-artikel" class="form-label">Deskripsi</label>
+                                    <textarea class="form-control summernote" id="keterangan-artikel"
+                                        name="keterangan_artikel" placeholder="Input some values" rows="5"
+                                        required></textarea>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="gambar" class="form-label">Gambar Artikel</label>
+                                    <input class="form-control form-control" id="gambar" name="gambar_artikel"
+                                        type="file" required />
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="height: 50px;">
+                                <button type="submit" class="btn btn-primary me-md-2" style="margin-top: 10px;">Tambah
+                                    Artikel</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <section class="card-body">
+                        <table id="productTable" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Nama Artikel</th>
+                                    <th scope="col">Gambar</th>
+                                    <th scope="col">Keterangan Gambar</th>
+                                    <th scope="col">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for article in articles %}
+                                <tr>
+                                    <th scope="row">{{ loop.index }}</th>
+                                    <td>{{ article.nama_artikel }}</td>
+                                    <td>
+                                        <img src="{{ url_for('static', filename = 'img_artikel/' + article.gambar_artikel) }}"
+                                            alt="Gambar Artikel" class="img-fluid"
+                                            style="max-width: 100px; max-height: 100px;" />
+                                    </td>
+                                    <td>{{ article.keterangan_gambar }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                            onclick="confirmDelete('{{ article._id }}')">Hapus</button>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#editModal{{ article._id }}">Edit</button>
+                                    </td>
+                                </tr>
+
+                                <!-- Modal untuk Edit Artikel -->
+                                <div class="modal fade" id="editModal{{ article._id }}" tabindex="-1"
+                                    aria-labelledby="editModalLabel{{ article._id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel{{ article._id }}">Edit
+                                                    Artikel
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post"
+                                                    action="{{ url_for('update_artikel', article_id = article._id) }}"
+                                                    enctype="multipart/form-data">
+                                                    <div class="mb-3">
+                                                        <label for="edit-nama-artikel" class="form-label">Judul
+                                                            Artikel</label>
+                                                        <input type="text" class="form-control" id="edit-nama-artikel"
+                                                            name="nama_give" value="{{ article.nama_artikel }}"
+                                                            required />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="edit-keterangan-gambar"
+                                                            class="form-label">Keterangan
+                                                            Gambar</label>
+                                                        <input type="text" class="form-control"
+                                                            id="edit-keterangan-gambar" name="keterangan_gambar"
+                                                            value="{{ article.keterangan_gambar }}" required />
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label for="edit-keterangan-artikel"
+                                                            class="form-label">Deskripsi</label>
+                                                        <textarea class="form-control summernote"
+                                                            id="edit-keterangan-artikel" name="keterangan_artikel"
+                                                            rows="5"
+                                                            required>{{ article.keterangan_artikel }}</textarea>
+                                                    </div>
+                                                    <div class="mb-4">
+                                                        <label for="edit-gambar" class="form-label">Gambar
+                                                            Artikel</label>
+                                                        <input class="form-control form-control" id="edit-gambar"
+                                                            name="gambar_artikel" type="file" />
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Simpan
+                                                        Perubahan</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+
+
+    <script>
+        // Toggle sidebar for mobile view
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('show');
+        });
+
+        $(document).ready(function () {
+            $('.summernote').summernote()
+        })
+
+        function confirmDelete(articleId) {
+            if (confirm('Apakah Anda yakin ingin menghapus artikel ini?')) {
+                window.location.href = "{{ url_for('hapus_artikel', article_id='')}}".concat(articleId)
+            }
+        }
+
+        function updateCurrentTime() {
+            var options = {
+                day: 'numeric',
+                month: 'numeric',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: false
+            }
+            var currentTime = new Date().toLocaleString(undefined, options)
+            document.getElementById('current-time').innerText = currentTime
+        }
+
+        setInterval(updateCurrentTime, 1000)
+        updateCurrentTime()
+
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('You have been logged out!');
+            window.location.href = '/';
+        }
+
+        $(document).ready(function () {
+            $(document).ready(function () {
+                $('#keterangan_gambar').summernote({
+                    height: 150,
+                    placeholder: 'Keterangan Gambar'
+                });
+                $('#keterangan_artikel').summernote({
+                    height: 300,
+                    placeholder: 'Keterangan Artikel'
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $('#productTable').DataTable({
+                "pageLength": 5,
+                "lengthChange": false,
+                "ordering": true,
+                "searching": true,
+                "paging": true
+            });
+        });
+    </script>
+</body>
+
+</html>

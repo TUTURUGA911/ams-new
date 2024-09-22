@@ -239,6 +239,7 @@
                 z-index: 100;
                 transform: translateX(-100%);
                 transition: transform 0.3s;
+                display: block;
             }
 
             .sidebar.show {
@@ -246,11 +247,11 @@
             }
 
             .content {
-                margin-left: 50px;
-                padding: 10px;
-                padding-bottom: 80px;
+                margin-left: 0; /* No margin on mobile */
+                padding: 0px; /* Less padding on mobile */
             }
 
+            
             .navbar-toggler {
                 display: block;
                 z-index: 200;
@@ -258,6 +259,7 @@
                 bottom: 10px;
                 left: 10px;
             }
+            
         }
 
         @media (max-width: 576px) {
@@ -287,23 +289,24 @@
                 border-radius: 5px;
             }
         }
+
         .card {
             border: none;
             border-radius: 10px;
         }
-        
+
         .product-image {
             max-width: 80px;
             max-height: 80px;
             object-fit: cover;
             border-radius: 5px;
         }
-        
+
         .card-title {
             font-size: 1.25rem;
             margin-bottom: 1rem;
         }
-        
+
         .card-text {
             margin-bottom: 0.5rem;
         }
@@ -322,11 +325,11 @@
         <h2>Admin AMS</h2>
         <a href="/dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
         <a href="/manageuser"><i class="fas fa-user-shield"></i> User</a>
-        <a href="#"><i class="fas fa-blog"></i> Blog</a>
+        <a href="/artikel"><i class="fas fa-blog"></i> Blog</a>
         <a href="/manageorder" class="active"><i class="fas fa-shopping-cart"></i> Order</a>
         <a href="/addproduct"><i class="fas fa-plus-circle"></i> Tambah Produk</a>
         <a href="/manageproduct"><i class="fas fa-cog"></i> Manage Produk</a>
-        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a href="javascript:void(0);" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 
     <div class="content">
@@ -368,21 +371,24 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                            {% if order['status'] != 'Finish' %}
+                            {% if order['status'] != 'Pesanan Selesai' %}
                             <div class="d-flex justify-content-between align-items-center">
-                                <select id="status" class="form-select me-2" aria-label="Select Status">
-                                    <option value="In Progress">In Progress</option>
-                                    <option value="Shipped">Shipped</option>
-                                    <option value="Delivered">Delivered</option>
-                                    <option value="Finish">Finish</option>
+                                <select id="status" class="form-select .status-update me-2" aria-label="Select Status">
+                                    <option value="Menunggu Pembayaran">Menunggu Pembayaran</option>
+                                    <option value="Pengiriman">Pengiriman</option>
+                                    <option value="Pesanan Sampai">Pesanan Sampai</option>
+                                    <option value="Pesanan Selesai">Pesanan Selesai</option>
                                 </select>
                                 <button onclick="updateOrderStatus('{{ order._id }}')" class="btn btn-primary"
                                     type="button">Perbarui Status</button>
                             </div>
                             {% endif %}
                         </div>
+                        <button onclick="deleteOrder('{{ order._id }}')" class="btn btn-danger" type="button">Hapus
+                            Order</button>
                     </div>
                     {% endfor %}
+
                 </div>
             </div>
         </div>
@@ -390,15 +396,20 @@
     </div>
 
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <!-- Scripts -->
     <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            var sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('show');
+        });
         function logout() {
             $.removeCookie('mytoken');
-            alert('You have been logged out!')
-            window.location.href = '/'
+            alert('You have been logged out!');
+            window.location.href = '/';
         }
 
         function updateOrderStatus(order_id) {
@@ -425,6 +436,26 @@
                 });
             } else {
                 alert("Please select a status");
+            }
+        }
+
+        function deleteOrder(order_id) {
+            if (confirm("Are you sure you want to delete this order?")) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/delete_order/" + order_id,
+                    success: function (response) {
+                        if (response['result'] === 'success') {
+                            alert("Order deleted successfully!");
+                            window.location.reload(); // Reload the page to see the changes
+                        } else {
+                            alert("Failed to delete order: " + response['msg']);
+                        }
+                    },
+                    error: function () {
+                        alert("An error occurred while trying to delete the order.");
+                    }
+                });
             }
         }
 

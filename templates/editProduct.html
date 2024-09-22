@@ -197,6 +197,7 @@
                 z-index: 100;
                 transform: translateX(-100%);
                 transition: transform 0.3s;
+                display: block;
             }
 
             .sidebar.show {
@@ -252,12 +253,12 @@
     <div class="sidebar" id="sidebar">
         <h2>Admin AMS</h2>
         <a href="/dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
-        <a href="#"><i class="fas fa-user-shield"></i> User</a>
-        <a href="#"><i class="fas fa-blog"></i> Blog</a>
+        <a href="/manageuser"><i class="fas fa-user-shield"></i> User</a>
+        <a href="/artikel"><i class="fas fa-blog"></i> Blog</a>
         <a href="/manageorder"><i class="fas fa-shopping-cart"></i> Order</a>
         <a href="/addproduct" class="active"><i class="fas fa-plus-circle"></i> Tambah Produk</a>
         <a href="/manageproduct"><i class="fas fa-cog"></i> Manage Produk</a>
-        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a href="javascript:void(0);" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 
     <div class="content">
@@ -305,6 +306,23 @@
                                     <p>Note: Upload gambar untuk update gambar</p>
                                     <input class="form-control" id="image2" type="file">
                                 </div>
+                                <div class="mb-4"></div>
+                                    <label for="image3" class="form-label">Gambar Ketiga</label>
+                                    <div class="mb-2">
+                                        <img class="img-fluid" src="/static/product_pics/{{info_product.image3}}"
+                                            alt="Product Image 2" style="width: 100%; max-width: 500px;">
+                                    </div>
+                                    <p>Note: Upload gambar untuk update gambar</p>
+                                    <input class="form-control" id="image3" type="file">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="image4" class="form-label">Gambar Keempat</label>
+                                    <div class="mb-2">
+                                        <img class="img-fluid" src="/static/product_pics/{{info_product.image4}}"
+                                            alt="Product Image 2" style="width: 100%; max-width: 500px;">
+                                    </div>
+                                    <p>Note: Upload gambar untuk update gambar</p>
+                                    <input class="form-control" id="image4" type="file">
                                 <div class="mb-4">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
                                     <textarea class="form-control" id="deskripsi" rows="5"
@@ -345,6 +363,8 @@
             let deskripsi = $('#deskripsi').val();
             let gambar = $("#image").prop("files")[0];
             let gambar2 = $("#image2").prop("files")[0];
+            let gambar3 = $("#image3").prop("files")[0];
+            let gambar4 = $("#image4").prop("files")[0];
 
             if (product_name && product_price && product_stock && deskripsi) {
                 let form_data = new FormData();
@@ -361,6 +381,14 @@
 
                 if (gambar2) {
                     form_data.append("file_give2", gambar2);
+                }
+
+                if (gambar3) {
+                    form_data.append("file_give3", gambar3);
+                }
+
+                if (gambar4) {
+                    form_data.append("file_give4", gambar4);
                 }
 
                 $.ajax({

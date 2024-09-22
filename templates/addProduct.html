@@ -197,6 +197,7 @@
                 z-index: 100;
                 transform: translateX(-100%);
                 transition: transform 0.3s;
+                display: block;
             }
 
             .sidebar.show {
@@ -253,11 +254,11 @@
         <h2>Admin AMS</h2>
         <a href="/dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
         <a href="/manageuser"><i class="fas fa-user-shield"></i> User</a>
-        <a href="#"><i class="fas fa-blog"></i> Blog</a>
+        <a href="/artikel"><i class="fas fa-blog"></i> Blog</a>
         <a href="/manageorder"><i class="fas fa-shopping-cart"></i> Order</a>
         <a href="/addproduct" class="active"><i class="fas fa-plus-circle"></i> Tambah Produk</a>
         <a href="/manageproduct"><i class="fas fa-cog"></i> Manage Produk</a>
-        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a href="javascript:void(0);" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 
     <div class="content">
@@ -288,13 +289,26 @@
                                         <input type="number" class="form-control" id="product-stock"
                                             placeholder="Example : 10">
                                     </div>
+                                    <select class="form-select" id="category" name="kategori_give">
+                                        <option selected value="">Pilih Kategori</option>
+                                        <option value="1">Commax</option>
+                                        <option value="2">Aiphone</option>
+                                    </select>
                                     <div class="form-group mb-4">
                                         <label for="image" class="form-label">Image</label>
                                         <input class="form-control" id="image" type="file">
                                     </div>
                                     <div class="form-group mb-4">
-                                        <label for="image2" class="form-label">Image Kedua</label>
+                                        <label for="image2" class="form-label">Image 2</label>
                                         <input class="form-control" id="image2" type="file">
+                                    </div>
+                                    <div class="form-group mb-4"></div>
+                                        <label for="image3" class="form-label">Image 3</label>
+                                        <input class="form-control" id="image3" type="file">
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="image4" class="form-label">Image 4</label>
+                                        <input class="form-control" id="image4" type="file">
                                     </div>
                                     <div class="form-group mb-4">
                                         <label for="deskripsi" class="form-label">Deskripsi</label>
@@ -334,23 +348,30 @@
             let product_price = $('#product-price').val();
             let product_stock = $('#product-stock').val();
             let deskripsi = $('#deskripsi').val();
+            let category = $('#category').val();
             let gambar = $("#image").prop("files")[0];
             let gambar2 = $("#image2").prop("files")[0];
+            let gambar3 = $("#image3").prop("files")[0];
+            let gambar4 = $("#image4").prop("files")[0];
 
             console.log("Product Name:", product_name);
             console.log("Product Price:", product_price);
             console.log("Product Stock:", product_stock);
             console.log("Deskripsi:", deskripsi);
+            console.log("Category:", category);
 
             if (product_name && product_price && product_stock && deskripsi) {
                 let form_data = new FormData();
 
                 form_data.append("file_give", gambar);
                 form_data.append("file_give2", gambar2);
+                form_data.append("file_give3", gambar3);
+                form_data.append("file_give4", gambar4);
                 form_data.append("name_give", product_name);
                 form_data.append("price_give", product_price);
                 form_data.append("stock_give", product_stock);
                 form_data.append("deskripsi_give", deskripsi);
+                form_data.append("category_give", category);
 
                 $.ajax({
                     type: "POST",
@@ -376,8 +397,8 @@
 
         function logout() {
             $.removeCookie('mytoken');
-            alert('You have been logged out!')
-            window.location.href = '/'
+            alert('You have been logged out!');
+            window.location.href = '/';
         }
     </script>
 </body>

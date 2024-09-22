@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.dataTables.min.css">
+
+
     <!-- Custom CSS -->
     <style>
         body {
@@ -239,6 +244,7 @@
                 z-index: 100;
                 transform: translateX(-100%);
                 transition: transform 0.3s;
+                display: block;
             }
 
             .sidebar.show {
@@ -257,6 +263,42 @@
                 position: fixed;
                 bottom: 10px;
                 left: 10px;
+            }
+
+            .table thead {
+                display: none;
+                /* Hide headers on mobile for a cleaner look */
+            }
+
+            .table tbody tr {
+                display: block;
+                /* Make each row a block */
+                margin-bottom: 15px;
+                /* Add space between rows */
+            }
+
+            .table tbody tr td {
+                display: flex;
+                /* Use flexbox to align items */
+                justify-content: space-between;
+                /* Space items */
+                text-align: right;
+                /* Align text to the right */
+                padding: 10px;
+                /* Add some padding */
+                border: 1px solid #ddd;
+                /* Optional: border for visibility */
+            }
+
+            .table tbody tr td::before {
+                content: attr(data-label);
+                /* Show labels before each value */
+                flex: 1;
+                /* Take full width */
+                text-align: left;
+                /* Align label text */
+                font-weight: bold;
+                /* Bold labels */
             }
         }
 
@@ -302,32 +344,23 @@
         <h2>Admin AMS</h2>
         <a href="/dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
         <a href="/manageuser"><i class="fas fa-user-shield"></i> User</a>
-        <a href="#"><i class="fas fa-blog"></i> Blog</a>
+        <a href="/artikel"><i class="fas fa-blog"></i> Blog</a>
         <a href="/manageorder"><i class="fas fa-shopping-cart"></i> Order</a>
         <a href="/addproduct"><i class="fas fa-plus-circle"></i> Tambah Produk</a>
         <a href="/manageproduct" class="active"><i class="fas fa-cog"></i> Manage Produk</a>
-        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a href="javascript:void(0);" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 
     <div class="content">
         <!-- Start Hero Section -->
         <div class="hero">
-            <div class="row">
-                <div class="col-md-12 d-flex justify-content-center mb-4">
-                    <form class="d-flex w-75" action="/search" method="GET">
-                        <input class="form-control mr-2" type="search" placeholder="Cari Produk..." aria-label="Search"
-                            name="q">
-                        <button class="btn btn-outline-secondary" type="submit">Search</button>
-                    </form>
-                </div>
-            </div>
             <div class="text-center mt-4">
                 <h3 class="text-uppercase">Manage Produk</h3>
             </div>
             <div class="container pt-5">
                 <!-- Product Table -->
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered">
+                    <table id="productTable" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th class="no-export">Gambar 1</th>
@@ -335,46 +368,34 @@
                                 <th>Nama</th>
                                 <th>Harga</th>
                                 <th>Stock</th>
-                                <th>Deskrispi</th>
+                                <th>Deskripsi</th>
                                 <th class="no-export">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for product in product_list | reverse %}
                             <tr>
-                                <td class="no-export"><img
+                                <td data-label="Gambar 1" class="no-export"><img
                                         src="{{ url_for('static', filename = 'product_pics/' + product.image) }}"
                                         alt="{{ product_name }}" style="max-width: 100px;" /></td>
-                                <td class="no-export"><img
+                                <td data-label="Gambar 2" class="no-export"><img
                                         src="{{ url_for('static', filename = 'product_pics/' + product.image2) }}"
                                         alt="{{ product_name }}" style="max-width: 100px;" /></td>
-                                <td>{{product.product_name}}</td>
-                                <td>Rp{{product.product_price}}</td>
-                                <td>{{product.product_stock}}</td>
-                                <td>{{product.description | striptags | truncate(100)}}...</td>
+                                <td data-label="Nama">{{ product.product_name }}</td>
+                                <td data-label="Harga">Rp{{ product.product_price }}</td>
+                                <td data-label="Stock">{{ product.product_stock }}</td>
+                                <td data-label="Deskripsi">{{ product.description | striptags | truncate(100) }}...</td>
                                 <td class="no-export"><a href="/editproduct/{{product._id}}"><button class="btn"
-                                            id="edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
-                                            </svg></button></a>
-                                    <button onclick="delete_product('{{product._id}}')" class="btn" id="delete"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                            <path
-                                                d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                                        </svg></button>
+                                            id="edit"><i class="fas fa-pencil-alt"></i></button></a>
+                                    <button onclick="delete_product('{{product._id}}')" class="btn" id="delete"><i
+                                            class="fas fa-trash"></i></button>
 
                                     {% if not product.is_best_product %}
-                                    <button onclick="mark_as_best_product('{{product._id}}')" class="btn btn-warning"
-                                        id="best-product">
-                                        Set Best
-                                    </button>
+                                    <button onclick="mark_as_best_product('{{product._id}}')"
+                                        class="btn btn-warning">Set Best</button>
                                     {% else %}
-                                    <button onclick="remove_best_product('{{product._id}}')" class="btn btn-secondary"
-                                        id="remove-best-product">
-                                        Remove Best
-                                    </button>
+                                    <button onclick="remove_best_product('{{product._id}}')"
+                                        class="btn btn-secondary">Remove Best</button>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -393,10 +414,17 @@
     </div>
 
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.0/js/dataTables.responsive.min.js"></script>
+
     <script>
+
         // Toggle sidebar for mobile view
         document.getElementById('sidebarToggle').addEventListener('click', function () {
             document.getElementById('sidebar').classList.toggle('show');
@@ -492,6 +520,14 @@
                 .catch(error => console.error('Error:', error));
         }
 
+        $('#productTable').DataTable({
+            responsive: true,
+            "pageLength": 5,
+            "lengthChange": false,
+            "ordering": true,
+            "searching": true,
+            "paging": true
+        });
     </script>
 </body>
 

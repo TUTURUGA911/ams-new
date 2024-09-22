@@ -14,61 +14,50 @@
     <!-- Template Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-slider.css') }}" />
-    <style>
-        .search input {
-            width: 80%;
-            border-radius: 20px 0 0 20px;
-        }
+    <!-- Template Main CSS File -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css2/style.css') }}" />
 
-        .search button {
-            border-radius: 0 20px 20px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css2/main.css') }}" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#navabout").addClass("active");
+        });
+    </script>
 </head>
 
 <body>
-    <!-- Start Header/Navigation -->
-    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark fixed-top" aria-label="Furni navigation bar">
-        <div class="container">
-            <a class="navbar-brand" href="/">AMS About<span>.</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarsFurni">
-                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li><a class="nav-link" href="/shop">Shop</a></li>
-                    <li class="active"><a class="nav-link" href="/about">About us</a></li>
-                    <li><a class="nav-link" href="/contact">Contact us</a></li>
-                    {% if logged_in %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cart">
-                            <i class="bi bi-cart-fill" style="font-size: 1.2rem;"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/orders">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/" onclick="logout()">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    {% endif %}
-                </ul>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header d-flex align-items-center">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="icon-AMSID" height="40px" />
+                <h1 style="color: #ffffff">AMS</h1>
+                <span style="color: aliceblue">.</span>
+                <h1 style="color: #ffffff;">About</h1>
+            </a>
 
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+            <nav id="navbar" class="navbar"></nav>
+            <!-- .navbar -->
+        </div>
+    </header>
+    <!-- End Header -->
+    <div class="hero">
+        <div class="pt-5">
+            <!-- End Carousel -->
+            <div class="search container d-flex align-items-center flex-grow-1 mb-3 mt-5 pb-3">
             </div>
         </div>
-    </nav>
-    <!-- End Header/Navigation -->
+    </div>
 
     <!-- Start Hero Section -->
     <div class="hero">
@@ -186,6 +175,91 @@
     </div>
     <!-- End Why Choose Us Section -->
 
+    <!-- ======= Get Started Section ======= -->
+    <section id="get-started" class="get-started section-bg">
+        <div class="container">
+            <div class="row justify-content-between gy-4">
+                <div class="col-lg-6 d-flex align-items-center" data-aos="fade-up">
+                    <div class="content">
+                        <h3>Ada saran atau masukan?</h3>
+                        <p>
+                            Selamat datang di Layanan Saran dan Masukan kami! Berikan
+                            pandangan, ide, atau pengalaman Anda untuk membantu
+                            meningkatkan pelayanan kami. Setiap umpan balik Anda sangat
+                            berharga bagi kami. Terima kasih atas kontribusinya!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-5" data-aos="fade" id="msgFormBox">
+                    <h3>Saran dan masukan</h3>
+                    <p>
+                        Silahkan berikan pandangan, ide, atau pengalaman Anda untuk
+                        membantu meningkatkan pelayanan kami.
+                    </p>
+                    <div class="row gy-3">
+                        <div class="col-md-12">
+                            <input type="text" name="name" class="form-control" placeholder="Name" id="username"
+                                required value="{% if user_login %}{{user_login.profile_name}}{% elif request.args.get('user') %}{{request.args.get('user')}}
+                {% endif %}" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="message" rows="6" placeholder="Message" id="message"
+                                required>
+{% if request.args.get('request') %}Permintaan buka akun, (Mohon berikan keterangan kenapa akun anda harus dibuka, tunggu dalam waktu kurang dari 2 hari sejak pengiriman untuk memeriksa kembali akun anda apakah sudah bisa login atau masih dalam status diblokir)
+              {% endif %}</textarea>
+                        </div>
+
+                        <div class="col-md-12 text-center">
+                            <button type="button" onclick="postsaran()" class="btn btn-success">
+                                Bagikan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Quote Form -->
+            </div>
+        </div>
+    </section>
+    <br /><!-- End Get Started Section -->
+
+    <!-- ======= Testimonials Section ======= -->
+    <section id="testimonials" class="testimonials section-bg">
+        <div class="container" data-aos="fade-up">
+            <div class="section-header">
+                <h2>Saran dan Masukan</h2>
+                <p>Terimakasih atas saran dan masukan yang kalian berikan :)</p>
+            </div>
+
+            <div class="swiper testimonials-slider">
+                <div class="swiper-wrapper">
+                    {% for data in datasaran %}
+                    {% if data.show == true %}
+                    <div class="swiper-slide">
+                        <div class="testimonial-wrap">
+                            <div class="testimonial-item">
+                                <h3>{{ data.username }}</h3>
+                                <p>
+                                    <i class="bi bi-quote quote-icon-left"></i>
+                                    {{ data.message }}
+                                    <i class="bi bi-quote quote-icon-right"></i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+    <!-- End Testimonials Section -->
+    </main>
+    <!-- End #main -->
+
     <!-- Start Footer Section -->
     <footer class="footer-section">
         <div class="container relative">
@@ -240,15 +314,23 @@
     </footer>
 
     <!-- End Footer Section -->
+    <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/tiny-slider.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
+    <div id="preloader"></div>
 
+    <!-- Vendor JS Files -->
+    <script src="static/vendor/aos/aos.js"></script>
+    <script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="static/vendor/purecounter/purecounter_vanilla.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{{ url_for('static', filename='js2/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js2/form-control.js') }}"></script>
+    <script src="{{ url_for('static', filename='js2/about-control.js') }}"></script>
+    <script src="{{ url_for('static', filename='js2/navbar-control.js') }}"></script>
 </body>
 
 </html>

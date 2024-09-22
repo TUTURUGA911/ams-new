@@ -18,6 +18,15 @@
     <!-- Template Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-slider.css') }}" />
+    <link href="static/css2/main.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
+
+    <link href="static/css2/style.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
 
     <style>
         .search input {
@@ -28,109 +37,49 @@
         .search button {
             border-radius: 0 20px 20px 0;
         }
+
+        .layanan {
+            background-color: #f8f9fa;
+        }
     </style>
 </head>
 
 <body>
-    <!-- Start Header/Navigation -->
-    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark fixed-top" aria-label="Furni navigation bar">
-        <div class="container">
-            <a class="navbar-brand" href="/">AMS<span>.</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarsFurni">
-                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li><a class="nav-link" href="/shop">Shop</a></li>
-                    <li><a class="nav-link" href="/about">About us</a></li>
-                    <li><a class="nav-link" href="/contact">Contact us</a></li>
-                    {% if is_admin %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/manageproduct">Kelola Produk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/manageorder">Kelola Orders</a>
-                    </li>
-                    {% endif %}
-                    {% if logged_in %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cart">
-                            <i class="bi bi-cart-fill" style="font-size: 1.2rem;"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/orders">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/" onclick="logout()">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    {% endif %}
-                </ul>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header d-flex align-items-center">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="icon-AMSID" height="40px" />
+                <h1 style="color: #ffffff">AMS</h1>
+                <span style="color: aliceblue">.</span>
+                <h1 style="color: #ffffff;">Home</h1>
+            </a>
 
-            </div>
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+            <nav id="navbar" class="navbar"></nav>
+            <!-- .navbar -->
         </div>
-    </nav>
-    <!-- End Header/Navigation -->
+    </header>
+    <!-- End Header -->
 
     <!-- Start Hero Section -->
     <div class="hero">
-        <div class="container pt-5">
-            <!-- Start Carousel -->
-            <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner rounded ">
-                    <!-- Slide 1 -->
-                    <div class="carousel-item active">
-                        <img src="{{ url_for('static', filename='images/1.png') }}" class="d-block w-100" alt="Slide 1">
-                    </div>
-                    <!-- Slide 2 -->
-                    <div class="carousel-item">
-                        <img src="{{ url_for('static', filename='images/2.png') }}" class="d-block w-100" alt="Slide 2">
-                    </div>
-                    <!-- Slide 3 -->
-                    <div class="carousel-item">
-                        <img src="{{ url_for('static', filename='images/3.png') }}" class="d-block w-100" alt="Slide 3">
-                    </div>
-                    <!-- Slide 4 -->
-                    <div class="carousel-item">
-                        <img src="{{ url_for('static', filename='images/4.png') }}" class="d-block w-100" alt="Slide 4">
-                    </div>
-                    <!-- Slide 5 -->
-                    <div class="carousel-item">
-                        <img src="{{ url_for('static', filename='images/5.png') }}" class="d-block w-100" alt="Slide 5">
-                    </div>
-                    <!-- Slide 6-->
-                    <div class="carousel-item">
-                        <img src="{{ url_for('static', filename='images/6.png') }}" class="d-block w-100" alt="Slide 6">
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
+        <div class="pt-5 pb-5 container">
             <!-- End Carousel -->
-
             <div class="search d-flex align-items-center flex-grow-1 mb-3 mt-5 pb-3">
                 <form class="d-flex justify-content-center flex-grow-1" action="/search" method="GET">
                     <input class="form-control me-2" type="search" placeholder="Cari barang yang ingin anda beli..."
                         aria-label="Search" name="q">
                     <button class="btn btn-outline-secondary" type="submit">Search</button>
                 </form>
+            </div>
+            <div class="video-container">
+                <iframe class="responsive-iframe"
+                    src="https://www.youtube.com/embed/8r1r_amkWPM?si=PcaP1RryFeM36IIc&vq=hd720" title="Ams Video"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -175,7 +124,7 @@
         </div>
     </div>
     <!-- End Product Section -->
-    <div class="container-fluid pt-5 pb-5">
+    <div class="container-fluid pt-5 pb-5 layanan">
         <div class="container text-center">
             <h2 class="fw-bold text-dark" id="layanan">Layanan <span>AMS</span></h2>
             <p>Kami adalah sebuah perusahaan yang bergerak dalam pelayanan jasa konsultan, pengadaan dan
@@ -214,6 +163,57 @@
             </div>
         </div>
     </div>
+    <!-- ======= Artikel ======= -->
+    <section id="articles" class="articles">
+        <div class="container" data-aos="fade-up">
+            <div class="section-header">
+                <h2>Blog dan Artikel</h2>
+            </div>
+            <div class="row">
+                {% for article in articles %}
+                <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5">
+                    <div class="card" data-aos="fade-up" data-aos-delay="100">
+                        <img src="{{ url_for('static', filename = 'img_artikel/' + article.gambar_artikel) }}"
+                            class="card-img-top" alt="{{ article.nama_artikel }}" />
+                        <div class="card-body">
+                            <h5 class="card-title">{{ article.nama_artikel }}</h5>
+                            <p class="card-text">{{ article['keterangan_artikel_truncated'] |safe }}</p>
+                            <a href="{{ url_for('artikel_detail', article_id=article['_id']) }}"
+                                class="btn btn-primary">Read More</a>
+                            {% if article.tanggal_upload %}
+                            <p class="card-text">
+                                <small>
+                                    <i class="bi bi-clock"></i>
+                                    {{ article.tanggal_upload.strftime('%Y-%m-%d') }}
+                                </small>
+                            </p>
+                            {% else %}
+                            <p class="card-text">
+                                <small class="text-muted">(Uploaded date, if available)</small>
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if total_pages > 1 %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% for page_num in range(1, total_pages + 1) %}
+                    <li class="page-item {% if page_num == current_page %}{% endif %}">
+                        <a class="page-link" href="{{ url_for('index', page = page_num) }}">{{ page_num }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- End Artikel -->
     <!-- Start Footer Section -->
     <footer class="footer-section">
         <div class="container relative">
@@ -266,16 +266,15 @@
             </div>
         </div>
     </footer>
+    <div id="preloader"></div>
 
     <!-- End Footer Section -->
 
     <!-- Scripts -->
     <script>
-        function logout() {
-            $.removeCookie('mytoken');
-            alert('You have been logged out!')
-            window.location.href = '/'
-        }
+        $(document).ready(function () {
+            $("#navlogin").addClass("active");
+        });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -285,6 +284,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.10.1/sha256.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.10.1/sha256.js"></script>
+    <script src="static/js2/main.js"></script>
+    <script src="static/js2/form-control.js"></script>
+    <script src="static/js2/navbar-control.js"></script>
 
 </body>
 

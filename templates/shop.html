@@ -14,51 +14,47 @@
     <!-- Template Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-slider.css') }}" />
+    <!-- Template Main CSS File -->
+    <link href="static/css2/main.css" rel="stylesheet" />
+
+    <link href="static/css2/style.css" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
 </head>
 
 <body>
-    <!-- Start Header/Navigation -->
-    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark fixed-top" aria-label="Furni navigation bar">
-        <div class="container">
-            <a class="navbar-brand" href="/">AMS Shop<span>.</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarsFurni">
-                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav item active"><a class="nav-link" href="/shop">Shop</a></li>
-                    <li><a class="nav-link" href="/about">About us</a></li>
-                    <li><a class="nav-link" href="/contact">Contact us</a></li>
-                    {% if logged_in %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cart">
-                            <i class="bi bi-cart-fill" style="font-size: 1.2rem;"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/orders">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/" onclick="logout()">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    {% endif %}
-                </ul>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header d-flex align-items-center">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="icon-AMSID" height="40px" />
+                <h1 style="color: #ffffff">AMS</h1>
+                <span style="color: aliceblue">.</span>
+                <h1 style="color: #ffffff;">Shop</h1>
+            </a>
 
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+            <nav id="navbar" class="navbar"></nav>
+            <!-- .navbar -->
+        </div>
+    </header>
+    <!-- End Header -->
+    <!-- Start Hero Section -->
+    <div class="hero">
+        <div class="pt-5">
+            <!-- End Carousel -->
+            <div class="search container d-flex align-items-center flex-grow-1 mb-3 mt-5 pb-3">
+                <form class="d-flex justify-content-center flex-grow-1" action="/search" method="GET">
+                    <input class="form-control me-2" type="search" placeholder="Cari barang yang ingin anda beli..."
+                        aria-label="Search" name="q">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </form>
             </div>
         </div>
-    </nav>
-    <!-- End Header/Navigation -->
+    </div>
+    <!-- End Hero Section -->
 
     <div class="untree_co-section product-section before-footer-section">
         <div class="container">
@@ -71,8 +67,6 @@
                             class="img-fluid product-thumbnail">
                         <h3 class="product-title">{{ product.product_name }}</h3>
                         <strong class="product-price">Rp{{ product.product_price|format_price }}</strong>
-                        <button class="btn btn-outline-primary mt-2"
-                            onclick="toggle_like('{{ product._id }}', 'product')">Like</button>
                         <span class="icon-cross">
                             <img src="{{ url_for('static', filename='images/cross.svg') }}" class="img-fluid">
                         </span>
@@ -83,52 +77,14 @@
             </div>
         </div>
     </div>
+    <div id="preloader"></div>
     <script>
-        function logout() {
-            $.removeCookie('mytoken');
-            alert('You have been logged out!')
-            window.location.href = '/'
-        }
+        $(document).ready(function () {
+            $("#navlogin").addClass("active");
+        });
 
         function detail(id) {
             window.location.href = '/detail/' + id;
-        }
-
-        function toggle_like(post_id, type) {
-            console.log(post_id, type);
-            let $a_like = $(`#${post_id} a[aria-label='heart']`);
-            let $i_like = $a_like.find("i");
-            if ($i_like.hasClass("fa-heart")) {
-                $.ajax({
-                    type: "POST",
-                    url: "/update_like",
-                    data: {
-                        post_id_give: post_id,
-                        type_give: type,
-                        action_give: "unlike",
-                    },
-                    success: function (response) {
-                        console.log("unlike");
-                        $i_like.addClass("fa-heart-o").removeClass("fa-heart");
-                        $a_like.find("span.like-num").text(response["count"]);
-                    },
-                });
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: "/update_like",
-                    data: {
-                        post_id_give: post_id,
-                        type_give: type,
-                        action_give: "like",
-                    },
-                    success: function (response) {
-                        console.log("like");
-                        $i_like.addClass("fa-heart").removeClass("fa-heart-o");
-                        $a_like.find("span.like-num").text(response["count"]);
-                    },
-                });
-            }
         }
     </script>
     <!-- Scripts -->
@@ -138,6 +94,14 @@
     <script src="{{ url_for('static', filename='js/tiny-slider.js') }}"></script>
     <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
+    <script src="static/js2/main.js"></script>
+    <script src="static/js2/form-control.js"></script>
+    <script src="static/js2/navbar-control.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.10.1/sha256.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.10.1/sha256.js"></script>
 
 </body>
 

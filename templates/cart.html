@@ -14,60 +14,40 @@
     <!-- Template Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-slider.css') }}" />
+    <!-- Template Main CSS File -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css2/style.css') }}" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css2/main.css') }}" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
 </head>
 
 <body>
-    <!-- Start Header/Navigation -->
-    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark fixed-top" aria-label="Furni navigation bar">
-        <div class="container">
-            <a class="navbar-brand" href="/">AMS Cart<span>.</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-                aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarsFurni">
-                <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav item "><a class="nav-link" href="/shop">Shop</a></li>
-                    <li><a class="nav-link" href="/about">About us</a></li>
-                    <li><a class="nav-link" href="/contact">Contact us</a></li>
-                    {% if is_admin %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/manageproduct">Kelola Produk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/manageorder">Kelola Orders</a>
-                    </li>
-                    {% endif %}
-                    {% if logged_in %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/cart">
-                            <i class="bi bi-cart-fill" style="font-size: 1.2rem;"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/orders">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/" onclick="logout()">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    {% endif %}
-                </ul>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header d-flex align-items-center">
+        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="icon-AMSID" height="40px" />
+                <h1 style="color: #ffffff">AMS</h1>
+                <span style="color: aliceblue">.</span>
+                <h1 style="color: #ffffff;">Cart</h1>
+            </a>
 
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+            <nav id="navbar" class="navbar"></nav>
+            <!-- .navbar -->
+        </div>
+    </header>
+    <!-- End Header -->
+    <div class="hero">
+        <div class="pt-5">
+            <!-- End Carousel -->
+            <div class="search container d-flex align-items-center flex-grow-1 mb-3 mt-5 pb-3">
             </div>
         </div>
-    </nav>
-    <!-- End Header/Navigation -->
-
+    </div>
     <div class="untree_co-section before-footer-section">
         <div class="container">
             <div class="row mb-5">
@@ -117,8 +97,8 @@
                                 onclick="window.location='/shop'">Lanjut Belanja</button>
                         </div>
                         <div class="col-md-6 mb-3 mb-md-0">
-                            <button class="btn btn-black btn-sm btn-block"
-                                onclick="window.location='/checkout'">Lanjut Checkout</button>
+                            <button class="btn btn-black btn-sm btn-block" onclick="window.location='/checkout'">Lanjut
+                                Checkout</button>
                         </div>
                     </div>
 
@@ -154,6 +134,7 @@
         </div>
     </div>
     </div>
+    <div id="preloader"></div>
 
     <script>
         function logout() {
@@ -189,6 +170,15 @@
     <script src="{{ url_for('static', filename='js/tiny-slider.js') }}"></script>
     <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
+    <script src="{{ url_for('static', filename='js2/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js2/form-control.js') }}"></script>
+    <script src="{{ url_for('static', filename='js2/navbar-control.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.10.1/sha256.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.10.1/sha256.js"></script>
+
 
 </body>
 

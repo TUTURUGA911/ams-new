@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMS</title>
+  <!-- Customized Bootstrap Stylesheet -->
+
+  <link href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Template Stylesheet -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-slider.css') }}" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet">
+
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet" />
+
+  <!-- Template Main CSS File -->
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+
+  <link href="{{ url_for('static', filename='css2/main.css') }}" rel="stylesheet" />
+  <link href="{{ url_for('static', filename='css2/style.css') }}" rel="stylesheet" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.10.1/sha256.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.10.1/sha256.js"></script>
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="/" class="logo d-flex align-items-center">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="icon-AMSID" height="40px" />
+        <h1 style="color: #ffffff">AMS</h1>
+        <span style="color: aliceblue">.</span>
+        <h1 style="color: #ffffff;">Profile</h1>
+      </a>
+
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      <nav id="navbar" class="navbar"></nav>
+      <!-- .navbar -->
+    </div>
+  </header>
+  <div class="hero">
+    <div class="pt-5">
+      <!-- End Carousel -->
+      <div class="search container d-flex align-items-center flex-grow-1 mb-3 mt-5 pb-3">
+      </div>
+    </div>
+  </div>
+  <main id="main">
+
+    <!-- ======= Hero Section ======= -->
+    {% if user_login %}
+    <div class="modal fade" id="modalResetPass" tabindex="-1" role="dialog" aria-labelledby="shareExperienceModal"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="blockModalLabel">Reset Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <label for="old">Password Lama:</label>
+            <div class="input-group mb-3" id="fg-password2">
+
+              <input type="password" class="form-control" placeholder="Masukkan Password Lama" aria-label="password-old"
+                aria-describedby="button-addon2" id="old-password" />
+              <span class="input-group-text" id="basic-addon3">
+                <i class="bi bi-eye-slash" id="togglePasswordOld">
+                </i>
+              </span>
+            </div>
+            <label for="old">Password Baru:</label>
+            <div class="input-group mb-3" id="fg-password2">
+
+              <input type="password" class="form-control" placeholder="Masukkan Password Baru" aria-label="password-new"
+                aria-describedby="button-addon2" id="new-password" />
+              <span class="input-group-text" id="basic-addon3">
+                <i class="bi bi-eye-slash" id="togglePasswordNew">
+                </i>
+              </span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary"
+              onclick="resetPass('{{user_login.username}}', '{{user_login.password}}')">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="shareExperienceModal" tabindex="-1" role="dialog"
+      aria-labelledby="shareExperienceModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="shareExperienceModalLabel">Update Profil User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label">Username</label>
+              <input type="text" id="username" name="username" class="form-control" value="{{user_login.username}}"
+                disabled>
+            </div>
+            <div class="form-group fg-fullname">
+              <label class="form-label">Full Name</label>
+              <input type="text" id="fullname" name="fullname" class="form-control"
+                placeholder="Masukan Nama Lengkap Anda" value="{{user_login.profile_name}}" required>
+            </div>
+            <h6 class="text-start mb-2" id="help-fullname"></h6>
+            <div class="form-group fg-email">
+              <label class="form-label">Email</label>
+              <br><input type="email" id="email" name="email" class="form-control" placeholder="Masukan Email"
+                value="{{user_login.email}}" required>
+            </div>
+            <h6 class="text-start mb-2" id="help-email"></h6>
+            <div class="form-group fg-job">
+              <label class="form-label">Job</label>
+              <input type="text" id="job" name="job" class="form-control" placeholder="Masukan Pekerjaan Anda"
+                value="{% if user_login.profile_job %}{{user_login.profile_job}}{% endif %}" required>
+            </div>
+            <h6 class="text-start mb-2" id="help-job"></h6>
+            <div class="form-group fg-phone">
+              <label class="form-label">Mobile Phone</label>
+              <input type="text" id="mobile" name="phone" class="form-control" placeholder="Masukan Nomor Telepon"
+                value="{% if user_login.profile_phone %}{{user_login.profile_phone}}{% endif %}" required>
+            </div>
+            <h6 class="text-start mb-2" id="help-phone"></h6>
+            <div class="form-group fg-address">
+              <label class="form-label">Address</label>
+              <input type="text" id="address" name="address" class="form-control" placeholder="Masukan Alamat"
+                value="{% if user_login.profile_address %}{{user_login.profile_address}}{% endif %}" required>
+            </div>
+            <h6 class="text-start mb-2" id="help-address"></h6>
+            <div class="form-group fg-bio">
+              <label class="form-label">Bio Profil</label>
+              <br><textarea class="form-control" row="4" id="bio" placeholder="Masukan bio profilmu"
+                required>{% if user_login.profile_info %}{{user_login.profile_info}}{% endif %}</textarea>
+            </div>
+            <h6 class="text-start mb-2" id="help-bio"></h6>
+            <div class="form-group">
+              <label class="form-label">Update Foto Profil</label>
+              <br><input type="file" class="form-control" id="image" name="image">
+            </div><br><br>
+            <div class="text-center">
+              <button type="button" onclick="update_profile()" class="btn btn-primary">Update</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Batal</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- ======= Blog Section ======= -->
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <section style="background-color: #eee; margin-top: 150px;">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="card mb-4">
+                <div class="card-body text-center">
+                  <img src="/static/{{user_info.profile_pic_real}}" alt="avatar" class="rounded-circle img-fluid"
+                    style="width: 150px; height: 150px;">
+                  <h5 class="my-3">{{user_info.profile_name}}</h5>
+                  <p class="text-muted mb-1">{% if user_info.profile_job %}{{user_info.profile_job}}{% else %}-{% endif
+                    %}</p>
+                  <p class="text-muted mb-4">{% if user_info.profile_address %}{{user_info.profile_address}}{% else
+                    %}-{% endif %}</p>
+                  {% if user_login %}
+                  <div class="d-flex justify-content-center mb-2">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                      data-bs-target="#shareExperienceModal">Edit Profil</button>
+                    <button type="button" class="btn btn-outline-primary ms-1" onclick="sign_out()">Logout</button>
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+
+            </div>
+            <div class="col-lg-8">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Full Name</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{user_info.profile_name}}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Email</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{{user_info.email}}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Mobile Phone</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{% if user_info.profile_phone %}{{user_info.profile_phone}}{% else
+                        %}-{% endif %}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Address</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{% if user_info.profile_address %}{{user_info.profile_address}}{% else
+                        %}-{% endif %}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Bio</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <p class="text-muted mb-0">{% if user_info.profile_info %}{{user_info.profile_info}}{% else %}-{%
+                        endif %}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% if user_login %}
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <p class="mb-0">Password</p>
+                    </div>
+                    <div class="col-sm-9">
+                      <div class="col-sm-9">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                          data-bs-target="#modalResetPass">Update Password</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+      </section>
+
+
+    </div>
+    </section><!-- End Blog Section -->
+
+  </main><!-- End #main -->
+
+  <!-- Start Footer Section -->
+  <footer class="footer-section">
+    <div class="container relative">
+      <div class="row g-5 mb-5">
+        <div class="col-lg-4">
+          <div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">AMS<span>.</span></a></div>
+          <p class="mb-4">
+            Moto kami MELEBIHI HARAPAN konsumen, kami menjamin kualitas sesuai standar yang diharapkan,
+            sehingga klien kami mendapat pelayanan dan jaminan kualitas, kepercayaan ini menjadi bagian dari
+            semangat kami untuk terus melayani, dengan pelayanan paska project yang menjadikan kami terus
+            eksis dan terus berinovasi.
+          </p>
+          <ul class="list-unstyled custom-social">
+            <li><a href="#"><span class="bi bi-facebook"></span></a></li>
+            <li><a href="#"><span class="bi bi-twitter"></span></a></li>
+            <li><a href="#"><span class="bi bi-instagram"></span></a></li>
+            <li><a href="#"><span class="bi bi-linkedin"></span></a></li>
+          </ul>
+        </div>
+        <div class="col-lg-8">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="map_container">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3964.1684135378687!2d106.8019525!3d-6.5003525!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c30b547f0a33%3A0xc21e8e25e072d5f3!2sPT.Anugerah%20Mitrautama%20Sejahtera!5e0!3m2!1sid!2sid!4v1722352155896!5m2!1sid!2sid"
+                  width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-top copyright">
+        <div class="row pt-4">
+          <div class="col-lg-6">
+            <p class="mb-2 text-center text-lg-start">Copyright &copy;
+              <script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash;
+            <p>AMS</p>
+            </p>
+          </div>
+
+          <div class="col-lg-6 text-center text-lg-end">
+            <ul class="list-unstyled d-inline-flex ms-auto">
+              <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- End Footer Section -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <!-- <script
+ src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+ integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+ crossorigin="anonymous"
+></script> -->
+
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/aos/aos.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/purecounter/purecounter_vanilla.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js2/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js2/navbar-control.js') }}"></script>
+  <script src="{{ url_for('static', filename='js2/user-control.js') }}"></script>
+
+
+</body>
+
+</html>

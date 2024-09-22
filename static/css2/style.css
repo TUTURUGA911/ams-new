@@ -1,0 +1,102 @@
+.btn-djID{
+    background-color: #508d69;
+    color:white;
+}
+
+.btn-djID:hover{
+    background-color: #45795a;
+    color:white;
+}
+
+.btn-djID2{
+    background-color: #7ba9de;
+    color:white;
+}
+
+.btn-djID2:hover{
+    background-color: #6bb1c4;
+    color:white;
+}
+
+.list-img{
+    height:200px;
+    width:100%;
+    object-fit: cover;
+}
+
+.detail-img{
+    height:400px;
+    width:100%;
+    object-fit: cover;
+}
+
+.section-50 {
+    padding: 20px 0;
+}
+
+.dark-link {
+    color: #333;
+    text-decoration: none !important;
+}
+
+.heading-line {
+    position: relative;
+    padding-bottom: 5px;
+}
+
+.heading-line:after {
+    content: "";
+    height: 4px;
+    width: 75px;
+    background-color: #0355d0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.notification-ui_dd-content {
+    margin-bottom: 30px;
+}
+
+.notification-list {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 7px;
+    background: #fff;
+    -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+.unread {
+    background: #e9eee9;
+}
+
+.notification-list .notification-list_content {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.notification-list .notification-list_content .notification-list_img img {
+    height: 48px;
+    width: 48px;
+    border-radius: 50px;
+    margin-right: 20px;
+}
+
+.notification-list .notification-list_content .notification-list_detail p {
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.notification-list .notification-list_feature-img img {
+    height: 48px;
+    width: 48px;
+    border-radius: 5px;
+    margin-left: 20px;
+}
