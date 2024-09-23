@@ -233,7 +233,8 @@
                     <h2 class="product-single-name">{{info_product.product_name}}</h2>
                     <p class="product-stock">Stock: {{info_product.product_stock}}</p>
                     <h3 class="product-single-price">Rp{{info_product.product_price | format_price }}</h3>
-                    <form id="productForm" action="/api/cart/mine/items" method="POST">
+                    <form id="productForm" action="/api/cart/mine/items" method="POST"
+                        onsubmit="return checkStock(event)">
                         <input type="hidden" name="product_id" value="{{info_product._id}}">
                         <input type="hidden" name="product_name" value="{{info_product.product_name}}">
                         <input type="hidden" name="product_price" value="{{info_product.product_price}}">
@@ -285,6 +286,30 @@
                 thumbnailContainer.appendChild(img);
             }
         });
+
+        function checkStock(event) {
+            var stock = {{info_product.product_stock}};
+            var qty = document.querySelector('input[name="qty"]').value;
+    
+            if (stock <= 0) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Stok Habis!',
+                    text: 'Maaf, produk ini sudah tidak tersedia.',
+                });
+                return false;
+            } else if (qty > stock) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Jumlah melebihi stok',
+                    text: 'Jumlah yang diminta melebihi stok yang tersedia.',
+                });
+                return false;
+            }
+            return true;
+        }
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
