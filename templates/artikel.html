@@ -15,14 +15,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <link rel="icon" href="{{ url_for('static', filename = 'images/logo.png') }}" type="image/x-icon" />
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f4f7f6;
-            margin: 0;
             display: flex;
+            flex-direction: column;
             min-height: 100vh;
-            overflow-x: hidden;
+            margin: 0;
         }
 
         .sidebar {
@@ -68,19 +69,17 @@
         .content {
             margin-left: 250px;
             padding: 20px;
-            flex: 1;
             background: #ffffff;
+            flex: 1;
             transition: margin-left 0.3s;
         }
 
         .card {
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: none;
             margin-top: 30px;
             padding: 20px;
-            background-color: #ffffff;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .card:hover {
@@ -102,7 +101,6 @@
         .btn {
             border-radius: 5px;
             padding: 8px 12px;
-            font-size: 0.9rem;
         }
 
         .btn-primary {
@@ -114,28 +112,10 @@
             background-color: #563d7c;
         }
 
-        .btn-secondary {
-            background-color: #6c757d;
-            color: #ffffff;
-            border: none;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-
         .table th {
             background-color: #6f42c1;
-            color: #ffffff;
+            color: white;
             text-align: center;
-        }
-
-        .table tbody tr:nth-of-type(odd) {
-            background-color: #f9f9f9;
-        }
-
-        .table tbody tr:nth-of-type(even) {
-            background-color: #ffffff;
         }
 
         .table tbody tr:hover {
@@ -158,9 +138,8 @@
             }
 
             .content {
-                margin-left: 50px;
-                padding: 10px;
-                padding-bottom: 80px;
+                margin-left: 20px;
+                padding-top: 60px;
             }
 
             .navbar-toggler {
@@ -218,130 +197,74 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-12">
-                    <div class="card w-100">
-                        <div class="text-center mb-3 pb-3 mt-4">
+                    <div class="card">
+                        <div class="text-center">
                             <h2>Data Blog</h2>
                         </div>
                         <hr />
                     </div>
 
-                    <section class="card-body mt-3">
+                    <section class="card-body">
                         <form method="post" action="{{ url_for('tambah_artikel') }}" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="nama-artikel" class="form-label">Judul Artikel</label>
                                     <input type="text" class="form-control" id="nama-artikel" name="nama_give"
-                                        placeholder="Input some values" required />
+                                        required />
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="keterangan-gambar" class="form-label">Keterangan Gambar</label>
                                     <input type="text" class="form-control" id="keterangan-gambar"
-                                        name="keterangan_gambar" placeholder="Input some values" required />
+                                        name="keterangan_gambar" required />
                                 </div>
-                                <div class="col-12 mb-5">
+                                <div class="col-12 mb-3">
                                     <label for="keterangan-artikel" class="form-label">Deskripsi</label>
                                     <textarea class="form-control summernote" id="keterangan-artikel"
-                                        name="keterangan_artikel" placeholder="Input some values" rows="5"
-                                        required></textarea>
+                                        name="keterangan_artikel" rows="5" required></textarea>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label for="gambar" class="form-label">Gambar Artikel</label>
-                                    <input class="form-control form-control" id="gambar" name="gambar_artikel"
-                                        type="file" required />
+                                    <input class="form-control" id="gambar" name="gambar_artikel" type="file"
+                                        required />
                                 </div>
                             </div>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="height: 50px;">
-                                <button type="submit" class="btn btn-primary me-md-2" style="margin-top: 10px;">Tambah
-                                    Artikel</button>
-                            </div>
+                            <button type="submit" class="btn btn-primary float-right">Tambah Artikel</button>
                         </form>
                     </section>
 
                     <section class="card-body">
-                        <table id="productTable" class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Nama Artikel</th>
-                                    <th scope="col">Gambar</th>
-                                    <th scope="col">Keterangan Gambar</th>
-                                    <th scope="col">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for article in articles %}
-                                <tr>
-                                    <th scope="row">{{ loop.index }}</th>
-                                    <td>{{ article.nama_artikel }}</td>
-                                    <td>
-                                        <img src="{{ url_for('static', filename = 'img_artikel/' + article.gambar_artikel) }}"
-                                            alt="Gambar Artikel" class="img-fluid"
-                                            style="max-width: 100px; max-height: 100px;" />
-                                    </td>
-                                    <td>{{ article.keterangan_gambar }}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="confirmDelete('{{ article._id }}')">Hapus</button>
-                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#editModal{{ article._id }}">Edit</button>
-                                    </td>
-                                </tr>
-
-                                <!-- Modal untuk Edit Artikel -->
-                                <div class="modal fade" id="editModal{{ article._id }}" tabindex="-1"
-                                    aria-labelledby="editModalLabel{{ article._id }}" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="editModalLabel{{ article._id }}">Edit
-                                                    Artikel
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="post"
-                                                    action="{{ url_for('update_artikel', article_id = article._id) }}"
-                                                    enctype="multipart/form-data">
-                                                    <div class="mb-3">
-                                                        <label for="edit-nama-artikel" class="form-label">Judul
-                                                            Artikel</label>
-                                                        <input type="text" class="form-control" id="edit-nama-artikel"
-                                                            name="nama_give" value="{{ article.nama_artikel }}"
-                                                            required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="edit-keterangan-gambar"
-                                                            class="form-label">Keterangan
-                                                            Gambar</label>
-                                                        <input type="text" class="form-control"
-                                                            id="edit-keterangan-gambar" name="keterangan_gambar"
-                                                            value="{{ article.keterangan_gambar }}" required />
-                                                    </div>
-                                                    <div class="mb-4">
-                                                        <label for="edit-keterangan-artikel"
-                                                            class="form-label">Deskripsi</label>
-                                                        <textarea class="form-control summernote"
-                                                            id="edit-keterangan-artikel" name="keterangan_artikel"
-                                                            rows="5"
-                                                            required>{{ article.keterangan_artikel }}</textarea>
-                                                    </div>
-                                                    <div class="mb-4">
-                                                        <label for="edit-gambar" class="form-label">Gambar
-                                                            Artikel</label>
-                                                        <input class="form-control form-control" id="edit-gambar"
-                                                            name="gambar_artikel" type="file" />
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Simpan
-                                                        Perubahan</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="productTable" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Artikel</th>
+                                        <th>Gambar</th>
+                                        <th>Keterangan Gambar</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data looping -->
+                                    {% for article in articles %}
+                                    <tr>
+                                        <th>{{ loop.index }}</th>
+                                        <td>{{ article.nama_artikel }}</td>
+                                        <td><img src="{{ url_for('static', filename='img_artikel/' + article.gambar_artikel) }}"
+                                                alt="Gambar Artikel" class="img-fluid"
+                                                style="max-width: 100px; max-height: 100px;" /></td>
+                                        <td>{{ article.keterangan_gambar }}</td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="confirmDelete('{{ article._id }}')">Hapus</button>
+                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editModal{{ article._id }}">Edit</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </section>
                 </div>
             </div>

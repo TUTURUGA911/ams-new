@@ -21,6 +21,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
         rel="stylesheet" />
+    <link rel="icon" href="{{ url_for('static', filename = 'images/logo.png') }}" type="image/x-icon" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
@@ -212,7 +213,7 @@
                         </div>
 
                         <div class="col-md-12 text-center">
-                            <button type="button" onclick="postsaran()" class="btn btn-success">
+                            <button type="button" onclick="validateAndPostSaran()" class="btn btn-primary">
                                 Bagikan
                             </button>
                         </div>
@@ -331,6 +332,21 @@
     <script src="{{ url_for('static', filename='js2/form-control.js') }}"></script>
     <script src="{{ url_for('static', filename='js2/about-control.js') }}"></script>
     <script src="{{ url_for('static', filename='js2/navbar-control.js') }}"></script>
+    <script>
+        const swiper = new Swiper('.testimonials-slider', {
+            slidesPerView: 3, // Jumlah slide yang ditampilkan
+            spaceBetween: 15, // Jarak antar slide
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            // Tambahkan opsi lain sesuai kebutuhan
+        });
+    </script>
 </body>
 
 </html>

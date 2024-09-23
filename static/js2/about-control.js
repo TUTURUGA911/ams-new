@@ -1,3 +1,21 @@
+function validateAndPostSaran() {
+  const name = document.getElementById('username').value.trim();
+  const message = document.getElementById('message').value.trim();
+
+  if (name === '') {
+      Swal.fire('Error', 'Nama harus diisi!', 'error');
+      return;
+  }
+
+  if (message === '') {
+      Swal.fire('Error', 'Saran atau masukan harus diisi!', 'error');
+      return;
+  }
+
+  // Jika validasi berhasil, panggil fungsi untuk mengirimkan saran
+  postsaran(name, message);
+}
+
 function postsaran() {
     let username = $("#username").val();
     let message = $("#message").val();

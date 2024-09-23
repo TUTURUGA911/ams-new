@@ -1025,6 +1025,21 @@ section {
   background-color: var(--color-primary);
 }
 
+.testimonials-slider {
+  width: 100%; /* Atur lebar slider */
+  height: auto; /* Biarkan tinggi otomatis */
+}
+
+.swiper-wrapper {
+  display: flex; /* Pastikan wrapper menggunakan flexbox */
+}
+
+.swiper-slide {
+  flex-shrink: 0; /* Mencegah slide menyusut */
+  width: calc(33.33% - 30px); /* Atur lebar slide sesuai kebutuhan */
+  margin-right: 15px; /* Tambahkan jarak antar slide */
+}
+
 @media (max-width: 767px) {
   .testimonials .testimonial-wrap {
     padding-left: 0;
@@ -1044,6 +1059,10 @@ section {
     position: static;
     left: auto;
   }
+
+  .swiper-slide {
+    width: calc(100% - 30px); /* Ubah lebar slide untuk tampilan mobile */
+  } 
 }
 
 /*--------------------------------------------------------------
